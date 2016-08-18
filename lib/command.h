@@ -20,6 +20,7 @@
 #include <xmmintrin.h>
 #include "project_version.h"
 #include "app.h"
+#include "signals.h"
 
 #define MRTRIX_UPDATED_API
 
@@ -80,6 +81,7 @@ int main (int cmdline_argc, char** cmdline_argv)
   ::MR::App::project_version = MRTRIX_PROJECT_VERSION;
 #endif
   try {
+    SignalHandler signal_handler;
 #ifdef __gui_app_h__
     ::MR::GUI::App app (cmdline_argc, cmdline_argv);
 #else
