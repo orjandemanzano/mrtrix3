@@ -25,7 +25,7 @@
 #include "math/stats/permutation.h"
 #include "math/stats/glm4.h"
 #include "stats/cfe.h"
-#include "stats/permtest4.h"
+#include "stats/permtestOneSample.h"
 #include "dwi/tractography/file.h"
 #include "dwi/tractography/scalar_file.h"
 #include "dwi/tractography/mapping/mapper.h"
@@ -33,6 +33,7 @@
 #include "dwi/tractography/mapping/writer.h"
 #include <cmath>
 #include <Eigen/Dense>
+#include <ostream>
 
 
 using namespace MR;
@@ -162,6 +163,7 @@ void run() {
   value_type smooth_std_dev = get_option_value ("smooth", DEFAULT_SMOOTHING_STD) / 2.3548;
 
   bool do_nonstationary_adjustment = get_options ("nonstationary").size();
+ // bool do_onesamplettest = get_options ("onesamplettest").size();
 
   int nperms_nonstationary = get_option_value ("nperms_nonstationary", DEFAULT_PERMUTATIONS_NONSTATIONARITY);
   
@@ -366,7 +368,18 @@ void run() {
     write_fixel_output (output_prefix + "std_dev.msf", temp.row(0), input_header, mask_fixel_image, fixel_index_image);
   }
 
-  Math::Stats::OneSampleGLMTTest glm_ttest (data, design, contrast);
+
+
+Math::Stats::OneSampleGLMTTest glm_ttest (data, design, contrast);
+
+
+int samplesize = data.cols();
+int num_unique_perms = pow(2,samplesize);
+if (num_perms >= num_unique_perms) {
+	num_perms = num_unique_perms;
+	CONSOLE ("Processing total number of unique permutations: " + str(num_unique_perms));
+}
+
   Stats::CFE::Enhancer cfe_integrator (connectivity_matrix, cfe_dh, cfe_e, cfe_h);
   std::shared_ptr<std::vector<double> > empirical_cfe_statistic;
 
