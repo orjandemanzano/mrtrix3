@@ -122,12 +122,6 @@ class PermsMatrix {
             {
               size_t index;
 	      Eigen::MatrixXf permsMatrix = PermsMatrix::fillPermsMatrix(stats_calculator.num_subjects());
-		std::ofstream outputFile;
-	    	outputFile.open("C:/msys64/home/Orjan/mrtrix3/lib/math/stats/DataOutPreprocessor.txt", std::fstream::out | std::fstream::app);
-            	if (outputFile.is_open()) {
-                	outputFile << permsMatrix << std::flush;
-            	}
-            	outputFile.close();
 	    
               while (( index = perm_stack.next() ) < perm_stack.num_permutations) {
 		std::vector<size_t> perm;
