@@ -25,7 +25,7 @@
 #include "math/stats/permutation.h"
 #include "math/stats/glm4.h"
 #include "stats/cfe.h"
-#include "stats/permtestOneSample.h"
+#include "stats/permtest4.h"
 #include "dwi/tractography/file.h"
 #include "dwi/tractography/scalar_file.h"
 #include "dwi/tractography/mapping/mapper.h"
@@ -163,7 +163,7 @@ void run() {
   value_type smooth_std_dev = get_option_value ("smooth", DEFAULT_SMOOTHING_STD) / 2.3548;
 
   bool do_nonstationary_adjustment = get_options ("nonstationary").size();
- // bool do_onesamplettest = get_options ("onesamplettest").size();
+  const bool do_onesamplettest = true; //get_options ("onesamplettest").size();
 
   int nperms_nonstationary = get_option_value ("nperms_nonstationary", DEFAULT_PERMUTATIONS_NONSTATIONARITY);
   
@@ -369,8 +369,9 @@ void run() {
   }
 
 
+  const bool UseOneSample = do_onesamplettest;
 
-Math::Stats::OneSampleGLMTTest glm_ttest (data, design, contrast);
+  Math::Stats::GLMTest<UseOneSample> glm_ttest (data, design, contrast);
 
 
 int samplesize = data.cols();

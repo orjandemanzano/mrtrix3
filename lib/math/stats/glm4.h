@@ -136,6 +136,7 @@ namespace MR
           //! @}
       }
 
+  
 
       /** \addtogroup Statistics
       @{ */
@@ -286,7 +287,10 @@ namespace MR
         protected:
           const Eigen::MatrixXf& y;
           Eigen::MatrixXf X, pinvX, scaled_contrasts;
-      };      
+      };
+       	template<bool UseOneSample>
+	using GLMTest = typename std::conditional<UseOneSample, GLMTTest, OneSampleGLMTTest>::type;
+     
     }
   }
 }
